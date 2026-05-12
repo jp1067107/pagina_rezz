@@ -73,6 +73,10 @@
 
             <!-- Question 1: The Pain of Invisibility -->
             <div id="step-1" class="hidden space-y-6 sm:space-y-8">
+                <button onclick="goBack(0)" class="group flex items-center gap-1.5 text-slate-500 hover:text-blue-400 transition-colors mb-2 text-[10px] font-bold uppercase tracking-widest">
+                    <i data-lucide="chevron-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                    Voltar
+                </button>
                 <div class="space-y-2">
                     <span class="text-blue-500 font-bold text-xs sm:text-sm uppercase tracking-widest">Invisibilidade</span>
                     <h2 class="text-xl sm:text-2xl font-bold text-white">Quando foi a última vez que você recebeu um convite real para entrevista?</h2>
@@ -95,6 +99,10 @@
 
             <!-- Question 2: The Design Barrier -->
             <div id="step-2" class="hidden space-y-6 sm:space-y-8">
+                <button onclick="goBack(1)" class="group flex items-center gap-1.5 text-slate-500 hover:text-blue-400 transition-colors mb-2 text-[10px] font-bold uppercase tracking-widest">
+                    <i data-lucide="chevron-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                    Voltar
+                </button>
                 <div class="space-y-2">
                     <span class="text-blue-500 font-bold text-xs sm:text-sm uppercase tracking-widest">Credibilidade Visual</span>
                     <h2 class="text-xl sm:text-2xl font-bold text-white">Se você fosse o dono da empresa, seu currículo atual passaria confiança imediata?</h2>
@@ -113,6 +121,10 @@
 
             <!-- Question 3: The Desire for Power -->
             <div id="step-3" class="hidden space-y-6 sm:space-y-8">
+                <button onclick="goBack(2)" class="group flex items-center gap-1.5 text-slate-500 hover:text-blue-400 transition-colors mb-2 text-[10px] font-bold uppercase tracking-widest">
+                    <i data-lucide="chevron-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                    Voltar
+                </button>
                 <div class="space-y-2">
                     <span class="text-blue-500 font-bold text-xs sm:text-sm uppercase tracking-widest">O Diferencial</span>
                     <h2 class="text-xl sm:text-2xl font-bold text-white">Você gostaria que uma Inteligência Artificial escrevesse suas conquistas para parecerem 10x mais impactantes?</h2>
@@ -223,11 +235,12 @@
                 document.getElementById('step-1').classList.add('step-enter');
                 document.getElementById('progress-dots').classList.remove('hidden');
                 updateProgress(1);
+                currentStep = 1;
             }, 300);
         }
 
         function next(step) {
-            const current = document.getElementById(`step-${currentStep || 1}`);
+            const current = document.getElementById(`step-${currentStep}`);
             const nextStep = document.getElementById(`step-${step}`);
             
             current.classList.remove('step-enter');
@@ -235,6 +248,7 @@
             
             setTimeout(() => {
                 current.classList.add('hidden');
+                current.classList.remove('step-exit');
                 nextStep.classList.remove('hidden');
                 nextStep.classList.add('step-enter');
                 updateProgress(step);
@@ -243,6 +257,29 @@
                 if (step === 4) {
                     runSimulation();
                 }
+            }, 300);
+        }
+
+        function goBack(step) {
+            const current = document.getElementById(`step-${currentStep}`);
+            const prevStep = document.getElementById(`step-${step}`);
+            
+            current.classList.remove('step-enter');
+            current.classList.add('step-exit');
+            
+            setTimeout(() => {
+                current.classList.add('hidden');
+                current.classList.remove('step-exit');
+                prevStep.classList.remove('hidden');
+                prevStep.classList.add('step-enter');
+                
+                if (step === 0) {
+                    document.getElementById('progress-dots').classList.add('hidden');
+                } else {
+                    updateProgress(step);
+                }
+                currentStep = step;
+                lucide.createIcons();
             }, 300);
         }
 
